@@ -1,34 +1,24 @@
 import bisect
 
 def star1():
-    fresh_range_map = dict()
-    lower_bound_list = []
     answer = 0
+    range_list = []
     with open("input.txt", "r") as file:
         while True:
             ranges = file.readline()
             if ranges == "\n":
                 break
-            ranges = ranges.strip()
-            fresh_range_map[int(ranges.split("-")[0])] = int(ranges.split("-")[1])
-            lower_bound_list.append(int(ranges.split("-")[0]))
-        lower_bound_list.sort()
-        # print(lower_bound_list, fresh_range_map)
+            ranges = ranges.strip().split("-")
+            range_list.append([int(ranges[0]), int(ranges[1])])
         while True:
             ingredient = file.readline()
             if not ingredient:
                 break
             ingredient = int(ingredient.strip())
-            # binary search lower bound list for nearest lower bound
-            lower_bound = bisect.bisect_left(lower_bound_list, ingredient)-1
-            if lower_bound == len(lower_bound_list):
-                lower_bound -= 1
-            elif lower_bound == -1:
-                lower_bound = 0
-            # print(lower_bound)
-            # print(lower_bound_list[lower_bound], fresh_range_map[lower_bound_list[lower_bound]], ingredient)
-            if ingredient >= lower_bound_list[lower_bound] and ingredient <= fresh_range_map[lower_bound_list[lower_bound]]:
-                answer += 1
+            for i in range_list:
+                if ingredient >= i[0] and ingredient <= i[1]:
+                    answer += 1
+                    break
     return answer
 
 def star2():
